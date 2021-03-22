@@ -1,9 +1,10 @@
-package ua.notes.servlet;
+package ua.notes.servlet.notes;
 
 import ua.notes.domain.User;
 import ua.notes.service.AutorizationSingletonService;
 import ua.notes.service.NoteService;
 import ua.notes.service.TemplateService;
+import ua.notes.servlet.AbstractNoteServlet;
 import ua.notes.utils.Utils;
 
 import javax.inject.Inject;
