@@ -1,0 +1,25 @@
+plugins {
+    id 'war'
+}
+
+compileJava.options.encoding = 'UTF-8'
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.7.2'
+    implementation group: 'javax.servlet', name: 'javax.servlet-api', version: '4.0.1'
+    implementation group: 'commons-codec', name: 'commons-codec', version: '1.15'
+    compileOnly group: 'javax.enterprise', name: 'cdi-api', version: '2.0.SP1'
+    compileOnly group: 'javax', name: 'javaee-web-api', version: '8.0.1'
+    implementation group: 'org.jboss.weld.servlet', name: 'weld-servlet', version: '2.4.8.Final'
+    testImplementation group: 'junit', name: 'junit', version: '4.13.2'
+}
+
+
+

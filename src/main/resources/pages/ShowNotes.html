@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Note v2 - программа в web</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/style.css" rel="stylesheet">
+
+</head>
+<body>
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<div class="container bootdey">
+    <div class="email-app mb-4">
+        <nav>
+            <a href="/" class="btn btn-danger btn-block">Note v2</a>
+            <ul class="nav">
+                {main_menu}
+            </ul>
+        </nav>
+        <main class="inbox">
+
+            <ul class="messages">
+                {show_notes}
+            </ul>
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                        {show_page}
+                </ul>
+            </nav>
+        </main>
+    </div>
+</div>
+<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+
+</script>
+</body>
+</html>

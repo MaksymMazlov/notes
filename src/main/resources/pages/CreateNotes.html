@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <!--  This file has been downloaded from bootdey.com    @bootdey on twitter -->
+    <!--  All snippets are MIT license http://bootdey.com/license -->
+    <title>Note v2 - программа в web</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/style.css" rel="stylesheet">
+
+</head>
+<body>
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<div class="container bootdey">
+    <div class="email-app mb-4">
+        <nav>
+            <a href="/" class="btn btn-danger btn-block">Note v2</a>
+            <ul class="nav">
+            </ul>
+        </nav>
+        <main class="inbox">
+            <form action="/notes/create" method="post">
+                <div class="form-group">
+                    <label>Название заметки:</label>
+                    <input type="text" class="form-control" name="title" placeholder="Enter title note">
+                </div>
+                <div class="form-group">
+                    <label>Текст заметки:</label>
+                    <textarea class="form-control"  type="text" name="text" rows="3" placeholder="Enter text note" ></textarea>
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" class="form-group" name="checkExpired">
+                    <label class="form-group">Временная</label>
+                    <small class="text-muted">Заметка будет удалена автоматичеки через 12ч.</small>
+                </div>
+                <input type="submit" value="Создать"/>
+            </form>
+        </main>
+    </div>
+</div>
+<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+
+</script>
+</body>
+</html>
