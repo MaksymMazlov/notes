@@ -1,4 +1,4 @@
-package ua.notes.servlet;
+package ua.notes.servlet.user;
 
 import ua.notes.service.TemplateService;
 import ua.notes.service.UserService;
