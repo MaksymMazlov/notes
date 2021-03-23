@@ -10,7 +10,9 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @ApplicationScoped
 public class NoteService
@@ -98,14 +100,16 @@ public class NoteService
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             Notes note = notesDao.showNotesById(userId, idNote);
             String login = userDao.findLoginById(note.getUserId());
-            String str = templateService.getHtmlByName("NoteItemDetails.html");
-            str = str.replace("{id}", String.valueOf(note.getId()));
-            str = str.replace("{login}", login);
-            str = str.replace("{date}", note.getCreated().format(formatter));
-            str = str.replace("{archived}", note.getArchived() ? "<span class=\"badge badge-secondary\">архивировано</span> " : "");
-            str = str.replace("{title}", note.getTitle());
-            str = str.replace("{content}", note.getContent());
-            return str;
+
+            Map<String, String> data = new HashMap<>();
+            data.put("id", String.valueOf(note.getId()));
+            data.put("login", login);
+            data.put("date", note.getCreated().format(formatter));
+            data.put("archived", note.getArchived() ? "<span class=\"badge badge-secondary\">архивировано</span> " : "");
+            data.put("title", note.getTitle());
+            data.put("content", note.getContent());
+
+            return templateService.render("NoteItemDetails.html", data);
         }
         catch (SQLException | IOException throwables)
         {

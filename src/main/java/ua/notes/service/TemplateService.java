@@ -1,10 +1,13 @@
 package ua.notes.service;
 
+import ua.notes.exception.TemplateException;
+
 import javax.enterprise.context.ApplicationScoped;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Map;
 
 @ApplicationScoped
 public class TemplateService
@@ -33,5 +36,26 @@ public class TemplateService
             System.out.println("Ошибка загрузки страници шаблона");
         }
         return null;
+    }
+
+    public String render(String name, Map<String, String> data) throws IOException
+    {
+        String str = getHtmlByName(name);
+        for (Map.Entry<String, String> element : data.entrySet())
+        {
+            String key = element.getKey();
+            String value = element.getValue();
+            String pattern = "{" + key + "}";
+
+            if (str.contains(pattern))
+            {
+                str = str.replace(pattern, value);
+            }
+            else
+            {
+                throw new TemplateException("Variable not found: " + pattern + " in " + name);
+            }
+        }
+        return str;
     }
 }
