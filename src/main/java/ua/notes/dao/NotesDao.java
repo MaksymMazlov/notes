@@ -68,7 +68,7 @@ public class NotesDao extends AbstractDao
         }
     }
 
-    public Notes showNotesById(int userId,int idNote) throws SQLException
+    public Notes showNotesById(int userId, int idNote) throws SQLException
     {
         try (Connection con = getConnection();
              PreparedStatement pstm = con.prepareStatement("SELECT * FROM notes  WHERE user_id=? and id=?"))
@@ -167,6 +167,20 @@ public class NotesDao extends AbstractDao
         catch (SQLException e)
         {
             System.out.println("Error delete");
+            e.printStackTrace();
+        }
+    }
+
+    public void removeArchived()
+    {
+        try (Connection con = getConnection();
+             Statement stm = con.createStatement())
+        {
+            stm.executeUpdate("DELETE FROM notes WHERE date_add(archivedDateTime,INTERVAL 30 day)<now()");
+        }
+        catch (SQLException e)
+        {
+            System.out.println("Error delete Archived notes ");
             e.printStackTrace();
         }
     }
