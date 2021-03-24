@@ -1,7 +1,16 @@
-    <div class="card-body">
-        <h5 class="card-title">{title}  {archived}</h5>
-        <h6 class="card-subtitle mb-2 text-muted">{login} - {date}</h6>
-        <p class="card-text">{content}.</p>
-        <a href='/notes/delete?id={id}' class="card-link">Удалить</a>
-        <a href="/notes/archive?id={id}" class="card-link">Архивировать</a>
+<div class="card-body">
+    <h5 class="card-title">{title} {archived}</h5>
+    <h6 class="card-subtitle mb-2 text-muted">{login} - {date}</h6>
+    <p class="card-text">{content}.</p>
+    <a href='/notes/delete?id={id}' class="card-link">Удалить</a>
+    <a href="/notes/archive?id={id}" class="card-link">Архивировать</a>
+</div>
+<hr>
+<form method="post">
+    <div class="form-group">
+        <label>Комментарии:</label>
+        <textarea type="text" name="text" class="form-control" rows="3"> </textarea>
     </div>
+    <button  type="submit" class="btn btn-warning">Добавить комметарий</button>
+</form>
+{comments}

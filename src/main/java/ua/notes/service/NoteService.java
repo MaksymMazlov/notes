@@ -1,5 +1,6 @@
 package ua.notes.service;
 
+import ua.notes.dao.CommentDao;
 import ua.notes.dao.NotesDao;
 import ua.notes.dao.UserDao;
 import ua.notes.domain.Notes;
@@ -24,6 +25,8 @@ public class NoteService
     private UserDao userDao;
     @Inject
     private TemplateService templateService;
+    @Inject
+    private CommentDao commentDao;
 
     public void createdNote(String title, String text, int userId)
     {
@@ -72,17 +75,17 @@ public class NoteService
             for (Notes note : notes)
             {
                 String login = userDao.findLoginById(note.getUserId());
-
-                String str = templateService.getHtmlByName("NoteItem.html");
-                str = str.replace("{id}", String.valueOf(note.getId()));
-                str = str.replace("{login}", login);
-                str = str.replace("{date}", note.getCreated().format(formatter));
-                str = str.replace("{archived}", note.getArchived() ? "<span class=\"badge badge-secondary\">архивировано</span> " : "");
-                str = str.replace("{title}", note.getTitle());
+                Map<String, String> data = new HashMap<>();
+                data.put("id", String.valueOf(note.getId()));
+                data.put("login", login);
+                data.put("date", note.getCreated().format(formatter));
+                data.put("archived", note.getArchived() ? "<span class=\"badge badge-secondary\">архивировано</span> " : "");
+                data.put("title", note.getTitle());
                 String content = note.getContent();
                 int endIndex = Math.min(300, content.length());
-                str = str.replace("{content}", content.substring(0, endIndex));
-                result += str;
+                data.put("content", content.substring(0, endIndex));
+
+                result += templateService.render("NoteItem.html", data);
             }
             return result;
         }
@@ -122,6 +125,7 @@ public class NoteService
     {
         try
         {
+            commentDao.deleteCommentsByNoteId(id, userId);
             notesDao.deleteNoteById(id, userId);
         }
         catch (SQLException e)

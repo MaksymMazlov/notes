@@ -46,12 +46,14 @@ public class CreateNoteServlet extends AbstractNoteServlet
         String text = req.getParameter("text");
         String checkExpired = req.getParameter("checkExpired");
 
-        if (checkExpired==null)
+        if (checkExpired == null)
         {
             noteService.createdNote(title, text, user.getId());
-        }else
-        noteService.createdExpiredNote(title, text, user.getId());
-
+        }
+        else
+        {
+            noteService.createdExpiredNote(title, text, user.getId());
+        }
         String html = templateService.getHtmlByName("Created.html");
         Utils.writerResponse(resp, html);
     }
