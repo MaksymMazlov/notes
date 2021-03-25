@@ -96,6 +96,38 @@ public class NoteService
         return null;
     }
 
+    public String printAllNotesBySearch(String searchReq, int userId, int page)
+    {
+        try
+        {
+            int offset = (page - 1) * PAGE_SIZE;
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            List<Notes> notes = notesDao.searchNotes(searchReq, userId, PAGE_SIZE, offset);
+            String result = "";
+            for (Notes note : notes)
+            {
+                String login = userDao.findLoginById(note.getUserId());
+                Map<String, String> data = new HashMap<>();
+                data.put("id", String.valueOf(note.getId()));
+                data.put("login", login);
+                data.put("date", note.getCreated().format(formatter));
+                data.put("archived", note.getArchived() ? "<span class=\"badge badge-secondary\">архивировано</span> " : "");
+                data.put("title", note.getTitle());
+                String content = note.getContent();
+                int endIndex = Math.min(300, content.length());
+                data.put("content", content.substring(0, endIndex));
+
+                result += templateService.render("NoteItem.html", data);
+            }
+            return result;
+        }
+        catch (SQLException | IOException e)
+        {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public String printOneNote(int userId, int idNote)
     {
         try
@@ -153,6 +185,23 @@ public class NoteService
         try
         {
             pagesTotal = notesDao.getCountNotesByUserId(userId);
+            pagesCount = pagesTotal / PAGE_SIZE + (pagesTotal % PAGE_SIZE > 0 ? 1 : 0);
+            return pagesCount;
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return pagesCount;
+    }
+
+    public int getCountSearchPages(String searchReq, int userId)
+    {
+        int pagesCount = 0;
+        int pagesTotal = 0;
+        try
+        {
+            pagesTotal = notesDao.getCountSearchNotesByUserId(searchReq, userId);
             pagesCount = pagesTotal / PAGE_SIZE + (pagesTotal % PAGE_SIZE > 0 ? 1 : 0);
             return pagesCount;
         }

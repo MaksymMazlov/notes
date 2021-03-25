@@ -4,10 +4,13 @@ import ua.notes.dao.NotesDao;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @ApplicationScoped
 public class RemoveArchivedNotesTask implements Runnable
 {
+    private static final Logger LOGGER = Logger.getLogger(RemoveArchivedNotesTask.class.getName());
     @Inject
     private NotesDao notesDao;
 
@@ -15,6 +18,6 @@ public class RemoveArchivedNotesTask implements Runnable
     public void run()
     {
         notesDao.removeArchived();
-        System.out.println("Archived notes will be DELETED");
+        LOGGER.log(Level.INFO,"Archived notes will be DELETED");
     }
 }

@@ -111,6 +111,52 @@ public class NotesDao extends AbstractDao
         return count;
     }
 
+    public int getCountSearchNotesByUserId(String searchReq, int userId) throws SQLException
+    {
+        int count = -1;
+        try (Connection con = getConnection();
+             PreparedStatement pstm = con.prepareStatement("SELECT COUNT(id) from notes where title like ? and user_id=? "))
+        {
+            pstm.setString(1, "%" + searchReq + "%");
+            pstm.setInt(2, userId);
+            try (ResultSet rset = pstm.executeQuery())
+            {
+                if (rset.next())
+                {
+                    count = rset.getInt("COUNT(id)");
+                }
+            }
+        }
+        return count;
+    }
+
+    public List<Notes> searchNotes(String searchReq, int userId, int limitPage, int offsetPage) throws SQLException
+    {
+        try (Connection con = getConnection();
+             PreparedStatement pstm = con.prepareStatement("select * from notes where title like ? and user_id=? ORDER BY created Desc LIMIT ? OFFSET ? "))
+        {
+            pstm.setString(1, "%" + searchReq + "%");
+            pstm.setInt(2, userId);
+            pstm.setInt(3, limitPage);
+            pstm.setInt(4, offsetPage);
+            try (ResultSet rset = pstm.executeQuery())
+            {
+                List<Notes> notesList = new ArrayList<>();
+                while (rset.next())
+                {
+                    Notes notes = new Notes();
+                    notes.setId(rset.getInt("id"));
+                    notes.setTitle(rset.getString("title"));
+                    notes.setContent(rset.getString("content"));
+                    notes.setCreated(rset.getTimestamp("created").toLocalDateTime());
+                    notes.setUserId(rset.getInt("user_id"));
+                    notesList.add(notes);
+                }
+                return notesList;
+            }
+        }
+    }
+
     public void deleteNoteById(int id, int userId) throws SQLException
     {
         try (Connection con = getConnection();
@@ -130,30 +176,6 @@ public class NotesDao extends AbstractDao
             pstm.setInt(1, id);
             pstm.setInt(2, userId);
             pstm.execute();
-        }
-    }
-
-    public List<Notes> showNotesByTitle(String title) throws SQLException
-    {
-        try (Connection con = getConnection();
-             PreparedStatement pstm = con.prepareStatement("SELECT * FROM notes WHERE title=?"))
-        {
-            pstm.setString(1, title);
-            try (ResultSet rset = pstm.executeQuery())
-            {
-                List<Notes> notesList = new ArrayList<>();
-                while (rset.next())
-                {
-                    Notes notes = new Notes();
-                    notes.setId(rset.getInt("id"));
-                    notes.setTitle(rset.getString("title"));
-                    notes.setContent(rset.getString("content"));
-                    notes.setCreated(rset.getTimestamp("created").toLocalDateTime());
-                    notes.setUserId(rset.getInt("user_id"));
-                    notesList.add(notes);
-                }
-                return notesList;
-            }
         }
     }
 
